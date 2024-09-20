@@ -2,11 +2,12 @@
 #define LIST_H
 
 struct list_element {
-    struct list *next;
+    struct list_element *next;
     int data;
 };
 
 void list_add(struct list_element **list_head, struct list_element *new_element);
 
-void list_remove(struct obj *element);
+void list_remove(struct list_element *element);
 
+#endif

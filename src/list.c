@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <list.h>
+#include "list.h"
 
 long buf[256];
 
 //head at buf[0]
-struct obj *head = NULL;
+struct list_element *head = NULL;
 
 void list_add(struct list_element **list_head, struct list_element *new_element){
     if (new_element == NULL){
@@ -17,8 +17,8 @@ void list_add(struct list_element **list_head, struct list_element *new_element)
     *list_head = new_element;
 }
 
-void list_remove(struct obj *element){
-    struct obj **current = &head;
+void list_remove(struct list_element *element){
+    struct list_element **current = &head;
 
     while (*current != NULL){
         if(*current == element){
@@ -31,12 +31,13 @@ void list_remove(struct obj *element){
 
 int main() {
 
-    struct obj *pObj = (struct obj*)&buf[4];
-    struct obj *pObj2 = (struct obj*)&buf[4];
+    struct list_element *e0 = (struct list_element*)&buf[4];
+    struct list_element *e1 = (struct list_element*)&buf[4];
 
-    head = pObj;
+    struct list_element *current = head;
 
-    printf("sizeof(pObj) = %ld\n", sizeof(pObj));
+
+    printf("sizeof(current) = %ld\n", sizeof(current));
     buf[0] = (long)&buf[4];
     buf[4] = 0;
 
