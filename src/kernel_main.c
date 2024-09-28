@@ -1,22 +1,39 @@
-
-
+#include "serial.h"
+#include "rprintf.h"
 
 char glbl[128];
 
+//timer delay activity
 unsigned long get_timer_count() {
-    unsigned long* timer_count_register = (unsigned long*) 0x3f003000;
+    volatile unsigned long* timer_count_register = (unsigned long*) 0x3f003000;
     return *timer_count_register;
 }
 
+//timer delay activity
 void wait(unsigned int time){
     unsigned long start_time = get_timer_count();
-    while (get_timer_count - start_time < time){
+    while (get_timer_count() - start_time < time){
 
     }
 }
-void kernel_main() {
 
+//execution level activity
+//broke upon changing execution level
+unsigned int getEl(){
+    unsigned int el;
+    asm ("mrs %0, CurrentEL" : "=r" (el)); //read reg
+    return el >> 2;
+}
+
+void kernel_main() {
+//fix void (*)(int) cast for putc as arg
+
+    //serial print activity
+    unsigned int el = getEl();
+    /*doesn't take void functions for some reason, worked when putc returned an int, but broke upon change of execution level */
+    esp_printf(putc_wrapper, "Current Exec Level is %d\r\n", el);
     unsigned long timer_count = get_timer_count();
+    //wait(1);
 
     extern int __bss_start, __bss_end;
     char *bssstart, *bssend;
